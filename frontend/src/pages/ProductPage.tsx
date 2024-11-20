@@ -156,9 +156,9 @@ const ProductPage = () => {
                   Customers who viewed this also viewed
                 </h1>
                 <div className="grid md:grid-cols-4 grid-cols-2 gap-x-1 gap-y-1 mt-3 ">
-                  {Array.from({ length: 4 }).map((_, i) => {
+                  {/* {Array.from({ length: 4 }).map((_, i) => {
                     return <ProductCard key={i} />;
-                  })}
+                  })} */}
                 </div>
               </div>
             </div>

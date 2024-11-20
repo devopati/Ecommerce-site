@@ -12,7 +12,7 @@ export const CardTheme = {
     base: "",
     horizontal: {
       off: "rounded-t-lg",
-      on: "h-96 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-l-lg",
+      on: "h-48 w-full rounded-t-lg object-cover md:h-auto md:w-48 md:rounded-none md:rounded-l-lg",
     },
   },
 };

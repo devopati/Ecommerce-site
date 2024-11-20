@@ -1,8 +1,36 @@
 import { HomeCoursel } from "../components/HomeCoursel";
 import { Link } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { ProductType } from "../types/types";
+import { Card } from "flowbite-react";
+import { useDispatch } from "react-redux";
+import { setProductsReducer } from "../app/slices/AppSlice";
 
 const Home = () => {
+  const dispatch = useDispatch();
+
+  const [products, setProducts] = useState<null | ProductType[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  const getData = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("https://fakestoreapi.com/products");
+      setProducts(res.data);
+      localStorage.setItem("products", JSON.stringify(res.data));
+      dispatch(setProductsReducer(res.data));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
   return (
     <div>
       <HomeCoursel />
@@ -12,10 +40,20 @@ const Home = () => {
           <h2>See All</h2>
         </Link>
       </div>
+
+      {loading && (
+        <Card className="flex justify-center items-center">
+          <div
+            className="animate-spin h-12 w-12 text-center rounded-full border-4 border-gray
+          border-t-4 border-t-green-400"
+          ></div>
+        </Card>
+      )}
       <div className="grid md:grid-cols-4 grid-cols-2 gap-x-1 gap-y-1 ">
-        {Array.from({ length: 10 }).map((_, i) => {
-          return <ProductCard key={i} />;
-        })}
+        {products &&
+          products.map((product, i) => {
+            return <ProductCard key={i} product={product} />;
+          })}
       </div>
     </div>
   );

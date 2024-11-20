@@ -2,18 +2,34 @@
 
 import { Card } from "flowbite-react";
 import { CardTheme } from "../theme/card-theme";
+import { ProductType } from "../types/types";
+import { useNavigate } from "react-router-dom";
 
-export function ProductCard() {
+interface ProductCardPropType {
+  product: ProductType;
+}
+
+export function ProductCard({ product }: ProductCardPropType) {
+  const navigate = useNavigate();
+
   return (
     <Card
       theme={CardTheme}
-      className="max-w-xs"
+      className="max-w-xs cursor-pointer"
       imgAlt="Apple Watch Series 7 in colors pink, silver, and black"
-      imgSrc="https://flowbite-react.com/images/products/apple-watch.png"
+      onClick={() => navigate(`/product/${product?.id}`)}
     >
-      <a href="/product">
+      <img
+        src={
+          product?.image ??
+          "https://flowbite-react.com/images/products/apple-watch.png"
+        }
+        alt=""
+        className="w-40 h-44"
+      />
+      <a href={`/product/${product?.id}`}>
         <h5 className="text-sm font-semibold tracking-tight text-gray-700 dark:text-white">
-          Apple Watch Series 7 GPS, Aluminium Case, Starlight Sport
+          {product?.title}
         </h5>
       </a>
       <div className="mb-2.5 mt-2.5 flex items-center">
@@ -63,7 +79,7 @@ export function ProductCard() {
       </div>
       <div className="flex items-center justify-between">
         <span className="text-xl font-bold text-gray-900 dark:text-white">
-          Ksh. 599
+          Ksh. {(product?.price * 129).toFixed(2)}
         </span>
         {/* <a
           href="#"

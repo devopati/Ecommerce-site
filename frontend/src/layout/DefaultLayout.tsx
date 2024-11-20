@@ -16,7 +16,7 @@ const DefaultLayout = ({ children }: DefaultLayoutPropTypes) => {
         <div className="hidden md:block">
           <SideView />
         </div>
-        <div className="col-span-8 min-h-full">{children}</div>
+        <div className="col-span-8 min-h-[100vh]">{children}</div>
 
         <div className="hidden md:block">
           <SideView />

@@ -1,8 +1,10 @@
 "use client";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
+import { useLocation } from "react-router-dom";
 
 export function NavbarHeader() {
+  const { pathname } = useLocation();
   return (
     <div className="h-14">
       <Navbar fluid rounded className="shadow fixed w-full z-50">
@@ -37,13 +39,21 @@ export function NavbarHeader() {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link href="#" active>
+          <Navbar.Link href="/" active={pathname === "/"}>
             Home
           </Navbar.Link>
-          <Navbar.Link href="#">Cart</Navbar.Link>
-          <Navbar.Link href="#">Services</Navbar.Link>
-          <Navbar.Link href="#">Pricing</Navbar.Link>
-          <Navbar.Link href="#">Contact</Navbar.Link>
+          <Navbar.Link href="/cart" active={pathname === "/cart"}>
+            Cart
+          </Navbar.Link>
+          <Navbar.Link href="/orders" active={pathname === "/orders"}>
+            Orders
+          </Navbar.Link>
+          <Navbar.Link href="/about" active={pathname === "/about"}>
+            About us
+          </Navbar.Link>
+          <Navbar.Link href="/contact" active={pathname === "/contact"}>
+            Contact Us
+          </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </div>
