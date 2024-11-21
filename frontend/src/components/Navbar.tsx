@@ -1,7 +1,7 @@
 "use client";
 
 import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 export function NavbarHeader() {
   const { pathname } = useLocation();
@@ -39,21 +39,27 @@ export function NavbarHeader() {
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
-          <Navbar.Link href="/" active={pathname === "/"}>
-            Home
-          </Navbar.Link>
-          <Navbar.Link href="/cart" active={pathname === "/cart"}>
-            Cart
-          </Navbar.Link>
-          <Navbar.Link href="/orders" active={pathname === "/orders"}>
-            Orders
-          </Navbar.Link>
-          <Navbar.Link href="/about" active={pathname === "/about"}>
-            About us
-          </Navbar.Link>
-          <Navbar.Link href="/contact" active={pathname === "/contact"}>
-            Contact Us
-          </Navbar.Link>
+          <Link to={"/"}>
+            <Navbar.Link active={pathname === "/"}>Home</Navbar.Link>
+          </Link>
+
+          <Link to={"/cart"}>
+            <Navbar.Link active={pathname === "/cart"}>Cart</Navbar.Link>
+          </Link>
+
+          <Link to={"/orders"}>
+            <Navbar.Link active={pathname === "/orders"}>Orders</Navbar.Link>
+          </Link>
+
+          <Link to={"/about"}>
+            <Navbar.Link active={pathname === "/about"}>About us</Navbar.Link>
+          </Link>
+
+          <Link to={"/contact"}>
+            <Navbar.Link active={pathname === "/contact"}>
+              Contact Us
+            </Navbar.Link>
+          </Link>
         </Navbar.Collapse>
       </Navbar>
     </div>

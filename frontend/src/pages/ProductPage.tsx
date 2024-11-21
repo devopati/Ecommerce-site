@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { NavbarHeader } from "../components/Navbar";
 import SideView from "../components/SideView";
 import { Badge, Button, Label, Select } from "flowbite-react";
@@ -8,8 +8,31 @@ import { MdOutlineSecurity, MdStars } from "react-icons/md";
 import { HiShoppingCart } from "react-icons/hi";
 import { ProductCard } from "../components/ProductCard";
 import { FooterCBottom } from "../components/Footer";
+import { useAppDispatch, useAppSelector } from "../app/hooks/redux-hooks";
+import { useParams } from "react-router-dom";
+import { ProductType } from "../types/types";
+import {
+  addProductToCart,
+  removeProductFromCart,
+} from "../app/slices/AppSlice";
+import { FiDelete } from "react-icons/fi";
 
 const ProductPage = () => {
+  const { productId } = useParams();
+
+  const dispatch = useAppDispatch();
+
+  const { products, cartIds } = useAppSelector((state) => state.app);
+
+  const [product, setProduct] = useState<ProductType | null>(null);
+  const getSingleProduct = () => {
+    const pdt = products.filter((p) => p.id == productId);
+    setProduct(pdt[0]);
+  };
+  useEffect(() => {
+    getSingleProduct();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, []);
   return (
     <div className="bg-gray-100 min-h-[100vh]">
       <NavbarHeader />
@@ -21,7 +44,10 @@ const ProductPage = () => {
             <div className="col-span-4">
               <div className="bg-white  flex gap-2 py-3 px-5">
                 <img
-                  src="https://ke.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/49/8447772/1.jpg?5251"
+                  src={
+                    product?.image ??
+                    "https://ke.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/49/8447772/1.jpg?5251"
+                  }
                   alt=""
                   className="w-80 h-80 "
                 />
@@ -39,18 +65,18 @@ const ProductPage = () => {
 
                     <FaRegHeart className="text-xl text-red-500" />
                   </div>
-                  <h1 className="pr-3 ">
-                    XIAOMI Redmi 14C, 6.88" (4GB RAM+128GB Storage) (Dual Sim)
-                    5160mAh - Midnight Black (2 YRs WRTY)
-                  </h1>
+                  <h1 className="pr-3 text-2xl ">{product?.title}</h1>
 
                   <div className="border-b">
-                    <h3 className="text-xs">Brand: XIAOMI</h3>
+                    <h3 className="text-xs">Category: {product?.category}</h3>
                   </div>
 
-                  <h1 className="text-2xl font-semibold">Ksh 12,000</h1>
+                  <h1 className="text-2xl font-semibold">
+                    Ksh{" "}
+                    {product?.price && (product.price * 129).toLocaleString()}
+                  </h1>
 
-                  <span className="text-xs">In Stock</span>
+                  <span className="text-xs text-green-500">In Stock</span>
 
                   <h5 className="text-xs">
                     + shipping from KSh 69 to CBD - UON/Globe/Koja/River Road
@@ -98,13 +124,30 @@ const ProductPage = () => {
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                     <span className="ml-3 mr-2 rounded  px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
-                      (33 Verified Ratings)
+                      ({product?.rating.count} Verified Ratings)
                     </span>
                   </div>
 
-                  <Button className="rounded-none text-xs w-full">
-                    <HiShoppingCart className="mr-2 h-5 w-5" />
-                    ADD TO CART
+                  <Button
+                    onClick={() => {
+                      const isAdded = cartIds.includes(product?.id ?? 0);
+                      isAdded
+                        ? dispatch(removeProductFromCart(product?.id))
+                        : dispatch(addProductToCart(product));
+                    }}
+                    color={`${
+                      cartIds.includes(product?.id ?? 0) ? "failure" : "info"
+                    }`}
+                    className={`rounded-none text-xs w-full`}
+                  >
+                    {cartIds.includes(product?.id ?? 0) ? (
+                      <FiDelete className="mr-2 h-5 w-5" />
+                    ) : (
+                      <HiShoppingCart className="mr-2 h-5 w-5" />
+                    )}
+                    {cartIds.includes(product?.id ?? 0)
+                      ? "REMOVE FROM CART"
+                      : "ADD TO CART"}
                   </Button>
 
                   <div className="mt-3">
@@ -120,18 +163,12 @@ const ProductPage = () => {
 
                     <div className="flex gap-2 items-center mt-3">
                       <MdStars className="text-2xl text-red-500" />
-                      <span>
-                        Free delivery for orders above Ksh 1999 in selected
-                        major cities.
-                      </span>
+                      <span>Easy and safer payments via the JumiaPay App.</span>
                     </div>
 
                     <div className="flex gap-2 items-center mt-3">
                       <MdOutlineSecurity className="text-2xl text-red-500" />
-                      <span>
-                        Free delivery for orders above Ksh 1999 in selected
-                        major cities.
-                      </span>
+                      <span>Ready for delivery between 23 December to 25</span>
                     </div>
                   </div>
                 </div>
@@ -139,16 +176,7 @@ const ProductPage = () => {
 
               <div className="mt-3 bg-white px-5 py-3">
                 <h1 className="font-semibold">Product Description</h1>
-                <p className="mt-2 text-gray-600">
-                  LOL is an acronym that stands for "laugh out loud" or
-                  "laughing out loud". It originated in the 1980s on a local
-                  Bulletin Board System (BBS) called ViewLine. It's a popular
-                  part of internet slang and is used to express amusement,
-                  irony, or double meanings. Today, people use LOL to indicate a
-                  smile or slight amusement, rather than actually laughing out
-                  loud. It can be used in response to something funny, or
-                  sarcastically to show that something's not serious.
-                </p>
+                <p className="mt-2 text-gray-600">{product?.description}</p>
               </div>
 
               <div className="bg-white py-3 mt-3 px-5">
@@ -156,9 +184,12 @@ const ProductPage = () => {
                   Customers who viewed this also viewed
                 </h1>
                 <div className="grid md:grid-cols-4 grid-cols-2 gap-x-1 gap-y-1 mt-3 ">
-                  {/* {Array.from({ length: 4 }).map((_, i) => {
-                    return <ProductCard key={i} />;
-                  })} */}
+                  {products
+                    .filter((p) => p.id !== productId)
+                    .slice(0, 4)
+                    .map((pr, i) => {
+                      return <ProductCard product={pr} key={i} />;
+                    })}
                 </div>
               </div>
             </div>
