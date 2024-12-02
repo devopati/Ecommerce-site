@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { ProductType } from "../types/types";
 import { Card } from "flowbite-react";
-import { useDispatch } from "react-redux";
 import { setProductsReducer } from "../app/slices/AppSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks/redux-hooks";
 
 const Home = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const { products } = useAppSelector((state) => state.app);
 
@@ -19,9 +17,9 @@ const Home = () => {
   const getData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("https://fakestoreapi.com/products");
-      localStorage.setItem("products", JSON.stringify(res.data));
-      dispatch(setProductsReducer(res.data));
+      const res = await axios.get("http://localhost:5002/api/product");
+      localStorage.setItem("products", JSON.stringify(res.data.products));
+      dispatch(setProductsReducer(res.data.products));
     } catch (error) {
       console.log(error);
     } finally {
@@ -76,7 +74,7 @@ const Home = () => {
         </Link>
       </div>
 
-      <div className="grid md:grid-cols-4 grid-cols-2 gap-x-1 gap-y-1 ">
+      <div className="grid md:grid-cols-4 grid-cols-2 gap-x-1 gap-y-1 pb-10 ">
         {products &&
           products.map((product, i) => {
             return <ProductCard key={i} product={product} />;
