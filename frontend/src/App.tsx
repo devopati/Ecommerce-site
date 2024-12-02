@@ -8,6 +8,8 @@ import Cart from "./pages/Cart";
 import Orders from "./pages/Orders";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
+import DefaultDashboardLayout from "./admin/layout/DefaultDashboardLayout";
+import AddProduct from "./admin/pages/AddProduct";
 
 const App = () => {
   return (
@@ -55,6 +57,10 @@ const App = () => {
             </DefaultLayout>
           }
         />
+
+        <Route path="/dashboard" element={<DefaultDashboardLayout />}>
+          <Route path="add-product" element={<AddProduct />} />
+        </Route>
       </Routes>
     </Provider>
   );

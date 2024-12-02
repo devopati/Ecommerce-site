@@ -10,24 +10,25 @@ interface ProductCardPropType {
 }
 
 export function ProductCard({ product }: ProductCardPropType) {
+  console.log(product);
   return (
     <Card
       theme={CardTheme}
       className="max-w-xs cursor-pointer"
       imgAlt="Apple Watch Series 7 in colors pink, silver, and black"
     >
-      <Link to={`/product/${product?.id}`}>
+      <Link to={`/product/${product?.slug}`}>
         <img
           src={
-            product?.image ??
+            product?.cover_image ??
             "https://flowbite-react.com/images/products/apple-watch.png"
           }
           alt=""
-          className="w-40 h-44"
+          className="w-40 h-44 object-contain"
         />
-        <a href={`/product/${product?.id}`}>
+        <a href={`/product/${product?._id}`}>
           <h5 className="text-sm font-semibold tracking-tight text-gray-700 dark:text-white">
-            {product?.title}
+            {product?.name}
           </h5>
         </a>
         <div className="mb-2.5 mt-2.5 flex items-center">
@@ -77,7 +78,7 @@ export function ProductCard({ product }: ProductCardPropType) {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-gray-900 dark:text-white">
-            Ksh. {(product?.price * 129).toLocaleString()}
+            Ksh. {(product?.price).toLocaleString()}
           </span>
           {/* <a
           href="#"
