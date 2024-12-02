@@ -4,7 +4,7 @@ import { ProductType } from "../../types/types";
 interface InitialStateProptype {
   products: ProductType[];
   cart: ProductType[];
-  cartIds: number[];
+  cartIds: string[];
 }
 
 const initialState: InitialStateProptype = {
@@ -27,14 +27,14 @@ const AppSlice = createSlice({
       return {
         ...state,
         cart: [...state.cart, action.payload],
-        cartIds: [...state.cartIds, action.payload.id],
+        cartIds: [...state.cartIds, action.payload._id],
       };
     },
 
     //function to remove from cart
     removeProductFromCart: (state, action) => {
       const newCart = state.cart.filter(
-        (product) => product.id !== action.payload
+        (product) => product._id !== action.payload
       );
       const newCartIds = state.cartIds.filter((id) => id !== action.payload);
       return {

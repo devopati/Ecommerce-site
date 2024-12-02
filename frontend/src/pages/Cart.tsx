@@ -7,15 +7,15 @@ const Cart = () => {
   const { cart } = useAppSelector((state) => state.app);
 
   const getTotalAmount = () => {
-    const total = cart.reduce((a, t) => a + t.price, 0);
-    return (total * 129).toFixed(2);
+    const total = cart.reduce((a, t) => a + Number(t.price), 0);
+    return total;
   };
 
   return (
     <div className="py-14">
       <div className="pb-4 border-b flex justify-between items-center">
         <h1 className="text-3xl">Your Shopping Cart</h1>
-        {cart.length > 0 && <Button>Checkout({getTotalAmount()})</Button>}
+        {cart.length > 0 && <Button>Checkout( Ksh.{getTotalAmount()})</Button>}
       </div>
 
       {cart.length === 0 && (
@@ -38,9 +38,9 @@ const Cart = () => {
             return (
               <div className="p-8 border-b flex justify-between items-start">
                 <div className="flex gap-10 ">
-                  <img src={c.image} alt="" className="w-20" />
+                  <img src={c.cover_image} alt="" className="w-20" />
                   <div>
-                    <h2 className="text-2xl">{c.title}</h2>
+                    <h2 className="text-2xl">{c.name}</h2>
                     <p className="text-xs text-red-700">Few Units Left</p>
                     <h2>
                       VIK SALES <span className="text-pink-700">Express</span>
@@ -48,9 +48,9 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-start gap-5">
-                  <h2 className="text-2xl">Ksh {(c.price * 129).toFixed(2)}</h2>
+                  <h2 className="text-2xl">Ksh {c.price}</h2>
                   <Button
-                    onClick={() => dispatch(removeProductFromCart(c.id))}
+                    onClick={() => dispatch(removeProductFromCart(c._id))}
                     color="red"
                   >
                     Remove From Cart
