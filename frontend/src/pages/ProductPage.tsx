@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { NavbarHeader } from "../components/Navbar";
 import SideView from "../components/SideView";
-import { Badge, Button, Label, Select } from "flowbite-react";
+import { Badge, Button, Select } from "flowbite-react";
 import { FaRegHeart } from "react-icons/fa";
 import { TbTruckDelivery } from "react-icons/tb";
 import { MdOutlineSecurity, MdStars } from "react-icons/md";
@@ -16,18 +16,25 @@ import {
   removeProductFromCart,
 } from "../app/slices/AppSlice";
 import { FiDelete } from "react-icons/fi";
+import axios from "axios";
 
 const ProductPage = () => {
   const { productId } = useParams();
 
   const dispatch = useAppDispatch();
 
-  const { products, cartIds } = useAppSelector((state) => state.app);
+  const { cartIds } = useAppSelector((state) => state.app);
 
   const [product, setProduct] = useState<ProductType | null>(null);
-  const getSingleProduct = () => {
-    const pdt = products.filter((p) => p.id == productId);
-    setProduct(pdt[0]);
+  const [similarProducts, setSimilarProducts] = useState<ProductType[]>([]);
+  const getSingleProduct = async () => {
+    const res = await axios.get("http://localhost:5002/api/product/single", {
+      params: {
+        slug: productId,
+      },
+    });
+    setProduct(res.data.product);
+    setSimilarProducts(res.data.similarProducts);
   };
   useEffect(() => {
     getSingleProduct();
@@ -43,14 +50,7 @@ const ProductPage = () => {
           <div className="grid grid-cols-5 gap-2">
             <div className="col-span-4">
               <div className="bg-white  flex gap-2 py-3 px-5">
-                <img
-                  src={
-                    product?.image ??
-                    "https://ke.jumia.is/unsafe/fit-in/500x500/filters:fill(white)/product/49/8447772/1.jpg?5251"
-                  }
-                  alt=""
-                  className="w-80 h-80 "
-                />
+                <img src={product?.cover_image} alt="" className="w-80 h-80 " />
 
                 <div className="flex flex-col gap-4">
                   <div className="flex justify-between items-center my-3">
@@ -65,15 +65,14 @@ const ProductPage = () => {
 
                     <FaRegHeart className="text-xl text-red-500" />
                   </div>
-                  <h1 className="pr-3 text-2xl ">{product?.title}</h1>
+                  <h1 className="pr-3 text-2xl font-bold ">{product?.name}</h1>
 
                   <div className="border-b">
                     <h3 className="text-xs">Category: {product?.category}</h3>
                   </div>
 
                   <h1 className="text-2xl font-semibold">
-                    Ksh{" "}
-                    {product?.price && (product.price * 129).toLocaleString()}
+                    Ksh {product?.price && product.price.toLocaleString()}
                   </h1>
 
                   <span className="text-xs text-green-500">In Stock</span>
@@ -124,28 +123,28 @@ const ProductPage = () => {
                       <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                     </svg>
                     <span className="ml-3 mr-2 rounded  px-2.5 py-0.5 text-xs font-semibold text-cyan-800 dark:bg-cyan-200 dark:text-cyan-800">
-                      ({product?.rating.count} Verified Ratings)
+                      ({product?.rating?.count ?? 0} Verified Ratings)
                     </span>
                   </div>
 
                   <Button
                     onClick={() => {
-                      const isAdded = cartIds.includes(product?.id ?? 0);
+                      const isAdded = cartIds.includes(product?._id ?? "0");
                       isAdded
-                        ? dispatch(removeProductFromCart(product?.id))
+                        ? dispatch(removeProductFromCart(product?._id))
                         : dispatch(addProductToCart(product));
                     }}
                     color={`${
-                      cartIds.includes(product?.id ?? 0) ? "failure" : "info"
+                      cartIds.includes(product?._id ?? "0") ? "failure" : "info"
                     }`}
                     className={`rounded-none text-xs w-full`}
                   >
-                    {cartIds.includes(product?.id ?? 0) ? (
+                    {cartIds.includes(product?._id ?? "0") ? (
                       <FiDelete className="mr-2 h-5 w-5" />
                     ) : (
                       <HiShoppingCart className="mr-2 h-5 w-5" />
                     )}
-                    {cartIds.includes(product?.id ?? 0)
+                    {cartIds.includes(product?._id ?? "0")
                       ? "REMOVE FROM CART"
                       : "ADD TO CART"}
                   </Button>
@@ -184,12 +183,9 @@ const ProductPage = () => {
                   Customers who viewed this also viewed
                 </h1>
                 <div className="grid md:grid-cols-4 grid-cols-2 gap-x-1 gap-y-1 mt-3 ">
-                  {products
-                    .filter((p) => p.id !== productId)
-                    .slice(0, 4)
-                    .map((pr, i) => {
-                      return <ProductCard product={pr} key={i} />;
-                    })}
+                  {similarProducts.slice(0, 4).map((pr, i) => {
+                    return <ProductCard product={pr} key={i} />;
+                  })}
                 </div>
               </div>
             </div>
