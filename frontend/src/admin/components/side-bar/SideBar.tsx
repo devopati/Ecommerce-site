@@ -59,8 +59,11 @@ export function SideBar() {
                   New Product
                 </Sidebar.Item>
               </Link>
-              <Link to={"#"}>
-                <Sidebar.Item active={isActivePath("#")} icon={PiFoldersFill}>
+              <Link to={"all-products"}>
+                <Sidebar.Item
+                  active={isActivePath("/dashboard/all-products")}
+                  icon={PiFoldersFill}
+                >
                   All Products
                 </Sidebar.Item>
               </Link>
