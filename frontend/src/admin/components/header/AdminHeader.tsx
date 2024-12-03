@@ -40,9 +40,9 @@ export function AdminHeader() {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">David Opati</span>
+              <span className="block text-sm">Victor Makori</span>
               <span className="block truncate text-sm font-medium">
-                rentnasi@gmail.com
+                viksales@gmail.com
               </span>
             </Dropdown.Header>
             <Dropdown.Item icon={IoSettings}>Settings</Dropdown.Item>

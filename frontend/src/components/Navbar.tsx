@@ -31,7 +31,9 @@ export function NavbarHeader() {
                 viki@gmail.com
               </span>
             </Dropdown.Header>
-            <Dropdown.Item>My Orders</Dropdown.Item>
+            <Dropdown.Item href="/dashboard/all-products">
+              Dashboard
+            </Dropdown.Item>
             <Dropdown.Item>Profile</Dropdown.Item>
             <Dropdown.Divider />
             <Dropdown.Item>Sign out</Dropdown.Item>
