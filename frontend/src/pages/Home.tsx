@@ -1,11 +1,11 @@
 import { HomeCoursel } from "../components/HomeCoursel";
 import { Link } from "react-router-dom";
 import { ProductCard } from "../components/ProductCard";
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { Card } from "flowbite-react";
 import { setProductsReducer } from "../app/slices/AppSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks/redux-hooks";
+import API from "../api/api";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -17,7 +17,7 @@ const Home = () => {
   const getData = async () => {
     setLoading(true);
     try {
-      const res = await axios.get("http://localhost:5002/api/product");
+      const res = await API.get("product");
       localStorage.setItem("products", JSON.stringify(res.data.products));
       dispatch(setProductsReducer(res.data.products));
     } catch (error) {

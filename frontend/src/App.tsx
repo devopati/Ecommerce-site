@@ -10,10 +10,14 @@ import About from "./pages/About";
 import Contact from "./pages/Contact";
 import DefaultDashboardLayout from "./admin/layout/DefaultDashboardLayout";
 import AddProduct from "./admin/pages/AddProduct";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ViewAllProducts from "./admin/pages/ViewAllProducts";
 
 const App = () => {
   return (
     <Provider store={store}>
+      <ToastContainer />
       <Routes>
         <Route
           path="/"
@@ -60,6 +64,7 @@ const App = () => {
 
         <Route path="/dashboard" element={<DefaultDashboardLayout />}>
           <Route path="add-product" element={<AddProduct />} />
+          <Route path="all-products" element={<ViewAllProducts />} />
         </Route>
       </Routes>
     </Provider>
