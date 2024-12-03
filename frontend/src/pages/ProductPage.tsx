@@ -16,7 +16,7 @@ import {
   removeProductFromCart,
 } from "../app/slices/AppSlice";
 import { FiDelete } from "react-icons/fi";
-import axios from "axios";
+import API from "../api/api";
 
 const ProductPage = () => {
   const { productId } = useParams();
@@ -28,7 +28,7 @@ const ProductPage = () => {
   const [product, setProduct] = useState<ProductType | null>(null);
   const [similarProducts, setSimilarProducts] = useState<ProductType[]>([]);
   const getSingleProduct = async () => {
-    const res = await axios.get("http://localhost:5002/api/product/single", {
+    const res = await API.get(`product/single`, {
       params: {
         slug: productId,
       },
@@ -37,9 +37,13 @@ const ProductPage = () => {
     setSimilarProducts(res.data.similarProducts);
   };
   useEffect(() => {
-    getSingleProduct();
     window.scrollTo({ top: 0, behavior: "smooth" });
+    getSingleProduct();
   }, []);
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    getSingleProduct();
+  }, [productId]);
   return (
     <div className="bg-gray-100 min-h-[100vh]">
       <NavbarHeader />
@@ -72,7 +76,8 @@ const ProductPage = () => {
                   </div>
 
                   <h1 className="text-2xl font-semibold">
-                    Ksh {product?.price && product.price.toLocaleString()}
+                    Ksh{" "}
+                    {product?.price && Number(product.price).toLocaleString()}
                   </h1>
 
                   <span className="text-xs text-green-500">In Stock</span>
@@ -174,8 +179,14 @@ const ProductPage = () => {
               </div>
 
               <div className="mt-3 bg-white px-5 py-3">
-                <h1 className="font-semibold">Product Description</h1>
-                <p className="mt-2 text-gray-600">{product?.description}</p>
+                <h1 className="font-semibold underline text-2xl">
+                  Product Description
+                </h1>
+                <div
+                  dangerouslySetInnerHTML={{
+                    __html: product?.description ?? "",
+                  }}
+                />
               </div>
 
               <div className="bg-white py-3 mt-3 px-5">

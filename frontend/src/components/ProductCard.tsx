@@ -10,7 +10,6 @@ interface ProductCardPropType {
 }
 
 export function ProductCard({ product }: ProductCardPropType) {
-  console.log(product);
   return (
     <Card
       theme={CardTheme}
@@ -78,7 +77,7 @@ export function ProductCard({ product }: ProductCardPropType) {
         </div>
         <div className="flex items-center justify-between">
           <span className="text-xl font-bold text-gray-900 dark:text-white">
-            Ksh. {(product?.price).toLocaleString()}
+            Ksh. {Number(product?.price).toLocaleString()}
           </span>
           {/* <a
           href="#"

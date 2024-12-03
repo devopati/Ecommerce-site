@@ -8,7 +8,7 @@ const Cart = () => {
 
   const getTotalAmount = () => {
     const total = cart.reduce((a, t) => a + Number(t.price), 0);
-    return total;
+    return total.toLocaleString();
   };
 
   return (
@@ -36,7 +36,10 @@ const Cart = () => {
           </div>
           {cart.map((c, i) => {
             return (
-              <div className="p-8 border-b flex justify-between items-start">
+              <div
+                key={i}
+                className="p-8 border-b flex justify-between items-start"
+              >
                 <div className="flex gap-10 ">
                   <img src={c.cover_image} alt="" className="w-20" />
                   <div>
@@ -48,7 +51,9 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="flex flex-col justify-start items-start gap-5">
-                  <h2 className="text-2xl">Ksh {c.price}</h2>
+                  <h2 className="text-2xl">
+                    Ksh {Number(c.price).toLocaleString()}
+                  </h2>
                   <Button
                     onClick={() => dispatch(removeProductFromCart(c._id))}
                     color="red"
