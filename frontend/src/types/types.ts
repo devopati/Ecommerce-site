@@ -12,4 +12,5 @@ export interface ProductType {
     rate: number;
     count: number;
   };
+  createdAt: string;
 }
