@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from "../app/hooks/redux-hooks";
 import { Button } from "flowbite-react";
 import { removeProductFromCart } from "../app/slices/AppSlice";
+import { CheckoutPopup } from "../components/CheckoutPopup";
+import { useState } from "react";
 
 const Cart = () => {
   const dispatch = useAppDispatch();
@@ -11,11 +13,22 @@ const Cart = () => {
     return total.toLocaleString();
   };
 
+  const [openModal, setOpenModal] = useState<boolean>(false);
+
   return (
     <div className="py-14">
+      <CheckoutPopup
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        total={getTotalAmount()}
+      />
       <div className="pb-4 border-b flex justify-between items-center">
         <h1 className="text-3xl">Your Shopping Cart</h1>
-        {cart.length > 0 && <Button>Checkout( Ksh.{getTotalAmount()})</Button>}
+        {cart.length > 0 && (
+          <Button onClick={() => setOpenModal(true)}>
+            Checkout( Ksh.{getTotalAmount()})
+          </Button>
+        )}
       </div>
 
       {cart.length === 0 && (

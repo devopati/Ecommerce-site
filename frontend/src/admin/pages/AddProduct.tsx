@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks/redux-hooks";
 import { createProductService } from "../../app/services/product-service";
 import { useEffect } from "react";
 
-//property schema created by yup
+//product schema created by yup
 let productSchema = yup.object({
   name: yup.string().required("Product Name is Required"),
   price: yup.string().required("Product price is required"),

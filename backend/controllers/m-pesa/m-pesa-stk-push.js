@@ -4,7 +4,7 @@ import { StatusCodes } from "http-status-codes";
 const mpesaStkPush = async (req, res, next) => {
   try {
     const token = req.token;
-    const { phone, amount } = req.body;
+    const { phone, amount, cart } = req.body;
 
     function formatNumberForMpesa(number) {
       const formattedNumber = number.replace(/\D/g, "");
@@ -42,6 +42,7 @@ const mpesaStkPush = async (req, res, next) => {
         },
       }
     );
+    console.log(response.data);
 
     res.status(StatusCodes.OK).json({
       msg: "Payment initiated, enter your m-pesa pin to complete transaction",

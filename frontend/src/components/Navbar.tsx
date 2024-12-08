@@ -26,17 +26,17 @@ export function NavbarHeader() {
             }
           >
             <Dropdown.Header>
-              <span className="block text-sm">Victor Makori</span>
+              {/* <span className="block text-sm">Victor Makori</span>
               <span className="block truncate text-sm font-medium">
                 viki@gmail.com
-              </span>
+              </span> */}
             </Dropdown.Header>
             <Dropdown.Item href="/dashboard/all-products">
               Dashboard
             </Dropdown.Item>
-            <Dropdown.Item>Profile</Dropdown.Item>
+            {/* <Dropdown.Item>Profile</Dropdown.Item> */}
             <Dropdown.Divider />
-            <Dropdown.Item>Sign out</Dropdown.Item>
+            {/* <Dropdown.Item>Sign out</Dropdown.Item> */}
           </Dropdown>
           <Navbar.Toggle />
         </div>
