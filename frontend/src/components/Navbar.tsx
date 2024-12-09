@@ -9,8 +9,8 @@ export function NavbarHeader() {
     <div className="h-14">
       <Navbar fluid rounded className="shadow fixed w-full z-50">
         <Navbar.Brand href="/">
-          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">
-            VIK SALES
+          <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white uppercase">
+            Green Re-use
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">

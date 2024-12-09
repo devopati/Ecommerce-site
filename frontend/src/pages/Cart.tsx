@@ -59,7 +59,8 @@ const Cart = () => {
                     <h2 className="text-2xl">{c.name}</h2>
                     <p className="text-xs text-red-700">Few Units Left</p>
                     <h2>
-                      VIK SALES <span className="text-pink-700">Express</span>
+                      GREEN RE-USE{" "}
+                      <span className="text-green-500">Express</span>
                     </h2>
                   </div>
                 </div>
