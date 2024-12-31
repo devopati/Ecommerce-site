@@ -24,6 +24,7 @@ const AppSlice = createSlice({
 
     //function to add to product to cart
     addProductToCart: (state, action) => {
+      action.payload["qty"] = 1;
       return {
         ...state,
         cart: [...state.cart, action.payload],
@@ -43,10 +44,37 @@ const AppSlice = createSlice({
         cartIds: newCartIds,
       };
     },
+
+    //increase qty
+    increaseQty: (state, action) => {
+      const product = state.cart.find(
+        (product) => product._id === action.payload
+      );
+      if (product) {
+        product.qty++;
+      }
+      return state;
+    },
+
+    //reduce qty
+    reduceQty: (state, action) => {
+      const product = state.cart.find(
+        (product) => product._id === action.payload
+      );
+      if (product && product.qty > 1) {
+        product.qty--;
+      }
+      return state;
+    },
   },
 });
 
-export const { setProductsReducer, addProductToCart, removeProductFromCart } =
-  AppSlice.actions;
+export const {
+  setProductsReducer,
+  increaseQty,
+  reduceQty,
+  addProductToCart,
+  removeProductFromCart,
+} = AppSlice.actions;
 
 export default AppSlice.reducer;

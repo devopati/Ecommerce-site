@@ -63,7 +63,7 @@ export function CheckoutPopup({
   return (
     <>
       {/* <Button onClick={() => setOpenModal(true)}>Toggle modal</Button> */}
-      <Modal show={openModal} size="lg" onClose={onCloseModal} popup>
+      <Modal show={openModal} size="xl" onClose={onCloseModal} popup>
         <Modal.Header />
         <Modal.Body>
           <form onSubmit={formik.handleSubmit} className="space-y-6">

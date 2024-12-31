@@ -171,7 +171,14 @@ const AddProduct = () => {
               }
             >
               <option>Please Select Area</option>
-              {["Electronics", "Groceries", "Fruits"].map((d, i) => {
+              {[
+                "Groceries",
+                "Fruits",
+                "Nuts",
+                "Seeds",
+                "Snacks",
+                "Dried Fruits",
+              ].map((d, i) => {
                 return (
                   <option key={i} value={d}>
                     {d}

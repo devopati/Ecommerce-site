@@ -8,6 +8,7 @@ export interface ProductType {
   cover_image: string;
   name: string;
   slug: string;
+  qty: number;
   rating: {
     rate: number;
     count: number;
