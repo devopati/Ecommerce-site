@@ -22,6 +22,7 @@
     "react-router-dom": "^6.28.0",
     "react-toastify": "^10.0.6",
     "tailwind-merge": "^2.5.4",
+    "yap": "^0.0.2",
     "yup": "^1.4.0"
   },
   "devDependencies": {

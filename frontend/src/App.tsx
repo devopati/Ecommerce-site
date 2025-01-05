@@ -13,6 +13,8 @@ import AddProduct from "./admin/pages/AddProduct";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ViewAllProducts from "./admin/pages/ViewAllProducts";
+import { Register } from "./pages/auth/Register";
+import { Login } from "./pages/auth/Login";
 
 const App = () => {
   return (
@@ -58,6 +60,22 @@ const App = () => {
           element={
             <DefaultLayout>
               <Contact />
+            </DefaultLayout>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <DefaultLayout>
+              <Register />
+            </DefaultLayout>
+          }
+        />
+        <Route
+          path="/login"
+          element={
+            <DefaultLayout>
+              <Login />
             </DefaultLayout>
           }
         />

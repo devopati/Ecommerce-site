@@ -5,6 +5,7 @@ import getAllProductsCtrl from "../controllers/products/get-all-products.js";
 import deleteProductCtrl from "../controllers/products/delete-product.js";
 import getAccesToken from "../controllers/m-pesa/get-access-token.js";
 import mpesaStkPush from "../controllers/m-pesa/m-pesa-stk-push.js";
+import getOrders from "../controllers/getOrders.js";
 const router = express.Router();
 
 router.route("/").post(createProductCtrl);
@@ -16,5 +17,7 @@ router.route("/").delete(deleteProductCtrl);
 router.route("/single").get(getSingleProductCtrl);
 
 router.route("/checkout").post(getAccesToken, mpesaStkPush);
+
+router.route("/orders").get(getOrders);
 
 export default router;

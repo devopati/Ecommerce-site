@@ -7,13 +7,20 @@ import {
 } from "../app/slices/AppSlice";
 import { CheckoutPopup } from "../components/CheckoutPopup";
 import { useState } from "react";
-import { BiMinus, BiPlus } from "react-icons/bi";
+import { BiArrowBack, BiMinus, BiPlus } from "react-icons/bi";
 import { CiLock } from "react-icons/ci";
 import mpesa from "../assets/mpesa.png";
+import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
+  const navigate = useNavigate();
+
   const dispatch = useAppDispatch();
   const { cart } = useAppSelector((state) => state.app);
+
+  const user: { user: { email: string; fullName: string }; token: string } =
+    JSON.parse(localStorage.getItem("user")); //get token and user from local storage
 
   const getTotalAmount = () => {
     const total = cart.reduce((a, t) => a + Number(t.price) * t.qty, 0);
@@ -36,6 +43,10 @@ const Cart = () => {
           setOpenModal={setOpenModal}
           total={totalFee}
         />
+        <div className="mb-5 flex items-center gap-2 underline text-cyan-600">
+          <BiArrowBack />
+          <Link to="/">Continue shopping</Link>
+        </div>
         <div className="pb-4 border-b flex justify-between items-center">
           <h1 className="text-xl">Cart</h1>
           {/* {cart.length > 0 && (
@@ -114,7 +125,7 @@ const Cart = () => {
 
       {/* summarry */}
       {cart.length > 0 && (
-        <div className="py-14">
+        <div className="py-14 mt-10">
           <div className="pb-4 border-b flex justify-between items-center">
             <h1 className="text-xl">Summary</h1>
           </div>
@@ -146,7 +157,17 @@ const Cart = () => {
             </div>
 
             <div className="w-full">
-              <Button onClick={() => setOpenModal(true)} className="w-full">
+              <Button
+                onClick={() => {
+                  if (user === null || !user.token) {
+                    toast.error("Please login to checkout");
+                    navigate("/register", { state: { fromCheckout: true } });
+                  } else {
+                    setOpenModal(true);
+                  }
+                }}
+                className="w-full"
+              >
                 Checkout
               </Button>
             </div>

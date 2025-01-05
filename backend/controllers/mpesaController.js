@@ -1,6 +1,7 @@
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
 import { consumer_key, consumer_secret } from "./mpesaConstants.js";
+import OrderSch from "../models/OrderSch.js";
 
 let token;
 // get access token
@@ -32,7 +33,16 @@ const getAccesToken = async (req, res, next) => {
 // stk push
 const stkPush = async (req, res) => {
   try {
-    const { phone, amount } = req.body;
+    const { phone, amount, cart, userId } = req.body;
+
+    console.log(req.body);
+
+    //save order array of that user,
+    await OrderSch.findOneAndUpdate(
+      { userId },
+      { $push: { Orders: cart } },
+      { new: true, upsert: true }
+    );
 
     const response = await axios.post(
       "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest",

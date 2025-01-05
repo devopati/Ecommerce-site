@@ -22,14 +22,13 @@ const RegisterUser = async (req, res) => {
 
     const user = await User.create({ fullName, email, password });
 
+    user.password = undefined;
+
     const token = user.createJWT();
     AttachCookie({ res, token });
 
     res.status(StatusCodes.CREATED).json({
-      user: {
-        fullName: user.fullName,
-        email: user.email,
-      },
+      user,
       token,
     });
   } catch (error) {

@@ -5,6 +5,8 @@ import { Button, Checkbox, Label, Modal, TextInput } from "flowbite-react";
 import { useAppSelector } from "../app/hooks/redux-hooks";
 import API from "../api/api";
 import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 //checkout schema created by yup
 let checkoutSchema = yup.object({
@@ -29,6 +31,8 @@ export function CheckoutPopup({
   setOpenModal: (arg: boolean) => void;
   total: string | number | undefined | null;
 }) {
+  const navigate = useNavigate();
+
   const { cart } = useAppSelector((state) => state.app);
 
   const tAmount = cart.reduce((a, t) => a + Number(t.price), 0);
@@ -36,6 +40,17 @@ export function CheckoutPopup({
   function onCloseModal() {
     setOpenModal(false);
   }
+
+  const user: {
+    user: { email: string; fullName: string; _id: string };
+    token: string;
+  } = JSON.parse(localStorage.getItem("user")); //get token and user from local storage
+
+  useEffect(() => {
+    if (user) {
+      formik.setFieldValue("email", user.user.email);
+    }
+  }, []);
 
   //formik for form submission
   const formik = useFormik({
@@ -48,10 +63,16 @@ export function CheckoutPopup({
     validationSchema: checkoutSchema,
     onSubmit: async (values) => {
       console.log({ ...values, cart });
-      await API.post("/product/checkout", { ...values, cart, amount: tAmount })
+      await API.post("/product/checkout", {
+        ...values,
+        cart,
+        amount: tAmount,
+        userId: user.user._id,
+      })
         .then((d) => {
           toast.success(d.data?.msg);
           setOpenModal(false);
+          navigate("/orders");
         })
         .catch((e) => {
           console.log(e);

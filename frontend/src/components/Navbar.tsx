@@ -1,10 +1,15 @@
 "use client";
 
-import { Avatar, Dropdown, Navbar } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import { Avatar, Button, Dropdown, Navbar } from "flowbite-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export function NavbarHeader() {
+  const navigate = useNavigate();
+
   const { pathname } = useLocation();
+  const user: { user: { email: string; fullName: string }; token: string } =
+    JSON.parse(localStorage.getItem("user") || "null"); //get token and user from local storage
+
   return (
     <div className="h-14">
       <Navbar fluid rounded className="shadow fixed w-full z-50">
@@ -14,30 +19,42 @@ export function NavbarHeader() {
           </span>
         </Navbar.Brand>
         <div className="flex md:order-2">
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar
-                alt="User settings"
-                img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
-                rounded
-              />
-            }
-          >
-            <Dropdown.Header>
-              {/* <span className="block text-sm">Victor Makori</span>
-              <span className="block truncate text-sm font-medium">
-                viki@gmail.com
-              </span> */}
-            </Dropdown.Header>
-            <Dropdown.Item href="/dashboard/all-products">
-              Dashboard
-            </Dropdown.Item>
-            {/* <Dropdown.Item>Profile</Dropdown.Item> */}
-            <Dropdown.Divider />
-            {/* <Dropdown.Item>Sign out</Dropdown.Item> */}
-          </Dropdown>
+          {!user?.token && (
+            <Button
+              onClick={() =>
+                navigate("/register", { state: { fromCheckout: false } })
+              }
+            >
+              Sign Up
+            </Button>
+          )}
+          {user?.token && (
+            <Dropdown
+              arrowIcon={false}
+              inline
+              label={
+                <Avatar
+                  alt="User settings"
+                  img="https://flowbite.com/docs/images/people/profile-picture-5.jpg"
+                  rounded
+                />
+              }
+            >
+              <Dropdown.Header></Dropdown.Header>
+              <Dropdown.Item href="/dashboard/all-products">
+                Dashboard
+              </Dropdown.Item>
+              <Dropdown.Item
+                onClick={() => {
+                  localStorage.removeItem("user");
+                  window.location.reload();
+                }}
+              >
+                Sign out
+              </Dropdown.Item>
+              <Dropdown.Divider />
+            </Dropdown>
+          )}
           <Navbar.Toggle />
         </div>
         <Navbar.Collapse>
