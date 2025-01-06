@@ -12,7 +12,7 @@ export function OrderCard({ order }: { order: ProductType }) {
       </div>
       <div className="w-full">
         <h5 className="text-xl font-semibold tracking-tight text-gray-900 dark:text-white">
-          Noteworthy technology acquisitions 2021
+          {order?.name}
         </h5>
         <p>Quantity: {order?.qty}</p>
         <p>Price: Ksh. {Number(order?.price).toLocaleString()}</p>
