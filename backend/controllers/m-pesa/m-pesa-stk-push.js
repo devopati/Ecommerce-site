@@ -1,10 +1,22 @@
 import axios from "axios";
 import { StatusCodes } from "http-status-codes";
+import OrderSch from "../../models/OrderSch.js";
 
 const mpesaStkPush = async (req, res, next) => {
   try {
     const token = req.token;
-    const { phone, amount, cart } = req.body;
+    const { phone, amount, cart, userId } = req.body;
+
+    // console.log(req.body);
+
+    //save order array of that user,
+    const t = await OrderSch.findOneAndUpdate(
+      { userId: userId },
+      { $push: { Orders: { $each: cart } } },
+      { new: true, upsert: true }
+    );
+
+    console.log(t);
 
     function formatNumberForMpesa(number) {
       const formattedNumber = number.replace(/\D/g, "");
