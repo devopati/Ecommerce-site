@@ -79,7 +79,7 @@ export function ProductCard({ product }: ProductCardPropType) {
           <span className="text-xl font-bold text-gray-900 dark:text-white">
             Ksh. {Number(product?.price).toLocaleString()}
           </span>
-          <h1>Qty: {product.p_quantity}</h1>
+          {product.p_quantity && <h1>Qty: {product.p_quantity}</h1>}
           {/* <a
           href="#"
           className="rounded-lg bg-cyan-700 px-5 py-2.5 text-center text-xs font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
