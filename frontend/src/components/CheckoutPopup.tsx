@@ -48,7 +48,7 @@ export function CheckoutPopup({
 
   useEffect(() => {
     if (user) {
-      formik.setFieldValue("email", user.user.email);
+      formik.setFieldValue("email", user?.user?.email);
     }
   }, []);
 

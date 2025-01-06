@@ -14,4 +14,5 @@ export interface ProductType {
     count: number;
   };
   createdAt: string;
+  p_quantity: string;
 }

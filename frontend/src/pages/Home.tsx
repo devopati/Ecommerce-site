@@ -6,6 +6,7 @@ import { Card } from "flowbite-react";
 import { setProductsReducer } from "../app/slices/AppSlice";
 import { useAppDispatch, useAppSelector } from "../app/hooks/redux-hooks";
 import API from "../api/api";
+import { ProductType } from "../types/types";
 
 const Home = () => {
   const dispatch = useAppDispatch();
@@ -18,8 +19,15 @@ const Home = () => {
     setLoading(true);
     try {
       const res = await API.get("product");
-      localStorage.setItem("products", JSON.stringify(res.data.products));
-      dispatch(setProductsReducer(res.data.products));
+
+      const modProducts = res.data.products.map((p: ProductType) => {
+        return {
+          ...p,
+          p_quantity: Math.floor(Math.random() * (500 - 50 + 1)) + 50,
+        };
+      });
+      localStorage.setItem("products", JSON.stringify(modProducts));
+      dispatch(setProductsReducer(modProducts));
     } catch (error) {
       console.log(error);
     } finally {

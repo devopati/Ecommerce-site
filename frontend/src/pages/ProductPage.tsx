@@ -75,10 +75,14 @@ const ProductPage = () => {
                     <h3 className="text-xs">Category: {product?.category}</h3>
                   </div>
 
-                  <h1 className="text-2xl font-semibold">
-                    Ksh{" "}
-                    {product?.price && Number(product.price).toLocaleString()}
-                  </h1>
+                  <div className="flex">
+                    <h1 className="text-2xl font-semibold">
+                      Ksh{" "}
+                      {product?.price && Number(product.price).toLocaleString()}
+                    </h1>
+
+                    {/* <h1>Qty: {product?.p_quantity}</h1> */}
+                  </div>
 
                   <span className="text-xs text-green-500">In Stock</span>
 
